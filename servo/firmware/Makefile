@@ -7,7 +7,11 @@ build:
 	cargo build --release
 
 objcopy:
-	arm-none-eabi-objcopy -O binary $(TARGET_DIR)/$(BIN_NAME) $(TARGET_DIR)/$(BIN_NAME).bin
+	cargo objcopy --release --bin firmware -- -O binary $(TARGET_DIR)/$(BIN_NAME).bin
+
+size:
+	#cargo objcopy -O binary $(TARGET_DIR)/$(BIN_NAME) $(TARGET_DIR)/$(BIN_NAME).bin
+	cargo size --release --bin firmware -- -O binary $(TARGET_DIR)/$(BIN_NAME).bin
 	
 flash:
 	sudo dfu-util -a 0 -s 0x08000000:leave -D $(TARGET_DIR)/$(BIN_NAME).bin
